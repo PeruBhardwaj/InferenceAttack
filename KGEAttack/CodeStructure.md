@@ -1,9 +1,3 @@
-## Poisoning Knowledge Graph Embeddings via Relation Inference Patterns
-This is the code repository to accompany ACL-2021 paper 'Poisoning Knowledge Graph Embeddings via Relation Inference Patterns'.
-
-Below we describe the structure of the code repository, dependencies and steps to run the experiments.
-
-
 ### Code structure
 - Commandline instructions for all experiments are available in bash scripts at this level
 - The main codebase is in ConvE
@@ -37,29 +31,3 @@ Below we describe the structure of the code repository, dependencies and steps t
         - For Zhang et al. attacks, an additional argument is down sampling percent
     - Folder saved_models, clusters, logs, results and losses are also empty but will be used if a script is run
     
-
-
-### Dependencies
-- python = 3.8.5
-- pytorch = 1.4.0
-- numpy = 1.19.1
-- jupyter = 1.0.0
-- pandas = 1.1.0
-- matplotlib = 3.2.2
-- scikit-learn = 0.23.2
-- seaborn = 0.11.0
-
-We have also included the conda environment file inference_attack.yml
-
-
-### Reproducing the results
-- To add the necessary directories and preprocess the original dataset, use the bash script preprocess.sh
-- For each model-dataset combination, we have included a bash script to train the original model, generate attacks from baselines and proposed attacks; and train poisoned model. These scripts are named as model-dataset.sh
-- The instructions in these scripts are grouped together under the echo statements which indicate what they do.
-- The hyperparameters in bash scripts are the ones used for the experiments reported in the submission
-- The metrics on decoy triples can be computed by the script compute_decoy_metrics_WN18RR.sh or compute_decoy_metrics_FB15k-237.sh
-- To reproduce the results, specific instructions from the bash scripts can be run on commandline or the full script can be run
-
-
-
-
