@@ -1,45 +1,33 @@
-## Poisoning Knowledge Graph Embeddings via Relation Inference Patterns
-This is the code repository to accompany ACL-2021 paper 'Poisoning Knowledge Graph Embeddings via Relation Inference Patterns'.
+<h1 align="left">
+  Poisoning Knowledge Graph Embeddings <br> via Relation Inference Patterns
+</h1>
 
-Below we describe the structure of the code repository, dependencies and steps to run the experiments.
+<p align="left">
+  <img src="https://img.shields.io/badge/ACL--2021-Abstract-blueviolet.svg">
+  <img src="https://img.shields.io/badge/ACL--2021-Paper-red.svg">
+  <img src="https://img.shields.io/badge/ACL--2021-Video-yellow.svg">
+  <img src="https://img.shields.io/badge/ACL--2021-Citation-9cf.svg">
+  <a href="https://underline.io/events/167/sessions?eventSessionId=5520"><img src="https://img.shields.io/badge/ACL--2021-Session--4D-green.svg"></a>
+</p>
 
+<p align="left">
+    <a href="https://www.scss.tcd.ie/~bhardwap/"><img src="http://img.shields.io/badge/Paper-Pre--print-orange.svg"></a>
+    <img src="https://img.shields.io/badge/License-MIT-blue.svg">
+</p>
 
-### Code structure
-- Commandline instructions for all experiments are available in bash scripts at this level
-- The main codebase is in ConvE
-    - script to preprocess data (generate dictionaries) is preprocess.py
-    - script to generate evaluation filters and training tuples is wrangle_KG.py
-    - script to train a KGE model is main.py
-    - script to select target triples from the test set is select_targets.py
-    - Random neighbourhood baseline is in rand_add_attack_1.py
-    - Random global baseline is in rand_add_attack_2.py
-    - Zhang et al. baseline is implemented in ijcai_add_attack.py
-    - CRIAGE baseline is in criage_add_attack_1.py
-    - Proposed symmetric attacks in sym_add_attack
-        - 1 for soft truth score 
-        - 2 for KGE ranks 
-        - 3 for cosine distance
-    - Proposed inversion attacks in inv_add_attack
-        - 1 for soft truth score 
-        - 2 for KGE ranks 
-        - 3 for cosine distance
-    - Proposed composition attacks in com_add_attack
-        - 1 for soft truth score 
-        - 2 for KGE ranks 
-        - 3 for cosine distance
-    - Elbow method to select clusters is in clustering_elbow.ipynb
-    - Script to generate clusters is create_clusters.py
-    - Script to compute metrics on decoy set in decoy_test.py
-    - Folder elbow_plots contains the elbow plots
-    - Folder data will contain datasets generated from running the experiments. 
-        - These are named as attack_model_dataset_split_budget_run 
-        - here split=1 for target split, budget=1 for most attacks except random global with 2 edits, and run is the number for a random run
-        - For Zhang et al. attacks, an additional argument is down sampling percent
-    - Folder saved_models, clusters, logs, results and losses are also empty but will be used if a script is run
-    
+<h4 align="left">This is the code repository to accompany the ACL 2021 paper on poisoning attacks on KGE models. <br>
+The work is a part of my PhD study at Trinity College Dublin and is funded by Accenture Labs and ADAPT Centre. <br>
+For any questions or feedback, add an issue or email me at: peru.bhardwaj@adaptcentre.ie</h4>
 
+## Overview
+![](overview.jpg)
+The figure illustrates the composition based adversarial attack on missing link prediction for fraud detection. The knowledge graph consists of two types of entities - `Person` and `BankAccount`. The target triple to predict is `(Karl, affiliated with, Joe the mobster)`. Original KGE model predicts this triple as True, i.e. assigns it a higher rank than the synthetic negative triples. But a malicious attacker can add adversarial triples (in purple) that connect `Karl` with a non-suspicious person `Bob` through composition pattern. Now, the KGE model predicts the target triple as False. 
 
-### Dependencies
+Thus, the proposed adversarial attacks are based on a reformulation of the problem of poisoning attacks on KGE models for missing link prediction. Instead of degrading the rank of a target triple directly, the attacker aims to improve the rank of a *decoy triple*. To do so, they exploit the inductive abilities of KGE models which are expressed through connectivity patterns like symmetry, inversion or composition. This problem reformulation for poisoning attacks also helps to understand the behaviour of KGE models because the extent of effectiveness of the attack relying on an inference pattern indicates the KGE model's sensitivity to that inference pattern.
+
+## Reproducing the results
+
+### Setup
 - python = 3.8.5
 - pytorch = 1.4.0
 - numpy = 1.19.1
@@ -49,17 +37,24 @@ Below we describe the structure of the code repository, dependencies and steps t
 - scikit-learn = 0.23.2
 - seaborn = 0.11.0
 
-We have also included the conda environment file inference_attack.yml
+Experiments reported in the paper were run in the conda environment `inference_attack.yml`
 
 
-### Reproducing the results
-- To add the necessary directories and preprocess the original dataset, use the bash script preprocess.sh
-- For each model-dataset combination, we have included a bash script to train the original model, generate attacks from baselines and proposed attacks; and train poisoned model. These scripts are named as model-dataset.sh
+### Usage
+- The codebase and the bash scripts used for experiments are in `KGEAttack`
+- To add the necessary directories and preprocess the original datasets, use the bash script `preprocess.sh`
+- For each model-dataset combination, there is a bash script to train the original model, generate attacks from baselines and proposed attacks; and train the poisoned model. These scripts are named as `model-dataset.sh`
 - The instructions in these scripts are grouped together under the echo statements which indicate what they do.
-- The hyperparameters in bash scripts are the ones used for the experiments reported in the submission
-- The metrics on decoy triples can be computed by the script compute_decoy_metrics_WN18RR.sh or compute_decoy_metrics_FB15k-237.sh
+- The hyperparameters in bash scripts are the ones used for the experiments reported in the paper
+- The metrics on decoy triples can be computed by the script `compute_decoy_metrics_WN18RR.sh` or `compute_decoy_metrics_FB15k-237.sh`
 - To reproduce the results, specific instructions from the bash scripts can be run on commandline or the full script can be run
 
 
+## References
+Parts of this codebase are based on the code from following repositories 
+- [ConvE](https://github.com/TimDettmers/ConvE)
+- [CRIAGE](https://github.com/pouyapez/criage)
+- [KGC Re-evalaution](https://github.com/svjan5/kg-reeval)
+- [ComplEx-N3](https://github.com/facebookresearch/kbc)
 
 
