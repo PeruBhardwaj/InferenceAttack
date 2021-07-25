@@ -2,17 +2,11 @@
   Poisoning Knowledge Graph Embeddings <br> via Relation Inference Patterns
 </h1>
 
-<p align="left">
-  <img src="https://img.shields.io/badge/ACL--2021-Abstract-blueviolet.svg">
-  <img src="https://img.shields.io/badge/ACL--2021-Paper-red.svg">
-  <img src="https://img.shields.io/badge/ACL--2021-Video-yellow.svg">
-  <img src="https://img.shields.io/badge/ACL--2021-Citation-9cf.svg">
-  <a href="https://underline.io/events/167/sessions?eventSessionId=5520"><img src="https://img.shields.io/badge/ACL--2021-Session--4D-green.svg"></a>
-</p>
+
 
 <p align="left">
-    <a href="https://www.scss.tcd.ie/~bhardwap/"><img src="http://img.shields.io/badge/Paper-Pre--print-orange.svg"></a>
-    <img src="https://img.shields.io/badge/License-MIT-blue.svg">
+    <a href="https://www.scss.tcd.ie/~bhardwap/ACL2021_Paper.pdf"><img src="http://img.shields.io/badge/Paper-Pre--print-orange.svg"></a>
+    <a href="https://github.com/PeruBhardwaj/InferenceAttack/tree/master"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 </p>
 
 <h4 align="left">This is the code repository to accompany the ACL 2021 paper on poisoning attacks on KGE models. <br>
@@ -45,9 +39,10 @@ Experiments reported in the paper were run in the conda environment `inference_a
 - To add the necessary directories and preprocess the original datasets, use the bash script `preprocess.sh`
 - For each model-dataset combination, there is a bash script to train the original model, generate attacks from baselines and proposed attacks; and train the poisoned model. These scripts are named as `model-dataset.sh`
 - The instructions in these scripts are grouped together under the echo statements which indicate what they do.
-- The hyperparameters in bash scripts are the ones used for the experiments reported in the paper
+- The hyperparameters in bash scripts are the ones used for the experiments reported in the paper.
 - The metrics on decoy triples can be computed by the script `compute_decoy_metrics_WN18RR.sh` or `compute_decoy_metrics_FB15k-237.sh`
-- To reproduce the results, specific instructions from the bash scripts can be run on commandline or the full script can be run
+- To reproduce the results, specific instructions from the bash scripts can be run individually on the commandline or the full script can be run.
+- All experiments in the paper were run on a shared HPC cluster that had Nvidia RTX 2080ti, Tesla K40 and V100 GPUs.
 
 
 ## References
