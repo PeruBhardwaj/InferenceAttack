@@ -2,11 +2,17 @@
   Poisoning Knowledge Graph Embeddings <br> via Relation Inference Patterns
 </h1>
 
-
+<p align="left">
+  <a href="https://aclanthology.org/2021.acl-long.147/"><img src="https://img.shields.io/badge/ACL--2021-Abstract-blueviolet.svg"></a>
+  <a href="https://aclanthology.org/2021.acl-long.147.pdf"><img src="https://img.shields.io/badge/ACL--2021-Paper-red.svg"></a>
+  <img src="https://img.shields.io/badge/ACL--2021-Video-yellow.svg">
+  <a href="https://aclanthology.org/2021.acl-long.147/"><img src="https://img.shields.io/badge/ACL--2021-Citation-9cf.svg"></a>
+  <a href="https://underline.io/events/167/sessions?eventSessionId=5520"><img src="https://img.shields.io/badge/ACL--2021-Session--4D-green.svg"></a>
+</p>
 
 <p align="left">
     <a href="https://www.scss.tcd.ie/~bhardwap/ACL2021_Paper.pdf"><img src="http://img.shields.io/badge/Paper-Pre--print-orange.svg"></a>
-    <a href="https://github.com/PeruBhardwaj/InferenceAttack/tree/master"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
+    <a href="https://github.com/PeruBhardwaj/InferenceAttack/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 </p>
 
 <h4 align="left">This is the code repository to accompany the ACL 2021 paper on poisoning attacks on KGE models. <br>
@@ -53,3 +59,21 @@ Parts of this codebase are based on the code from following repositories
 - [ComplEx-N3](https://github.com/facebookresearch/kbc)
 
 
+## Citation
+
+```bibtex
+@inproceedings{bhardwaj-etal-2021-poisoning,
+    title = "Poisoning Knowledge Graph Embeddings via Relation Inference Patterns",
+    author = "Bhardwaj, Peru  and
+      Kelleher, John  and
+      Costabello, Luca  and
+      O{'}Sullivan, Declan",
+    booktitle = "Proceedings of the 59th Annual Meeting of the Association for Computational Linguistics and the 11th International Joint Conference on Natural Language Processing (Volume 1: Long Papers)",
+    month = aug,
+    year = "2021",
+    address = "Online",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2021.acl-long.147",
+    pages = "1875--1888"
+    }
+```
