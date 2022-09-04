@@ -2,7 +2,7 @@
 
 cd ConvE
 
-# train the original model
+train the original model
 echo 'Training original model'
 
 CUDA_VISIBLE_DEVICES=0 python -u main.py --model distmult --data FB15k-237 --lr 0.005 --input-drop 0.5
@@ -13,11 +13,11 @@ mkdir data/target_distmult_FB15k-237_1
 CUDA_VISIBLE_DEVICES=0 python -u select_targets.py --model distmult --data FB15k-237 --lr 0.005 --input-drop 0.5
 
 echo 'Re-training the model to compute baseline change in metrics for target set'
-python -u wrangle_KG.py target_distmult_FB15k-237_1
-CUDA_VISIBLE_DEVICES=0 python -u main.py --model distmult --data target_distmult_FB15k-237_1 --lr 0.005 --input-drop 0.5
+#python -u wrangle_KG.py target_distmult_FB15k-237_1
+#CUDA_VISIBLE_DEVICES=0 python -u main.py --model distmult --data target_distmult_FB15k-237_1 --lr 0.005 --input-drop 0.5
 
 
-echo 'Generating random edits for the neighbourhood'
+# echo 'Generating random edits for the neighbourhood'
 CUDA_VISIBLE_DEVICES=0 python -u rand_add_attack_1.py --model distmult --data FB15k-237 --budget 1 --rand-run 1
 python -u wrangle_KG.py rand_add_n_distmult_FB15k-237_1_1_1
 CUDA_VISIBLE_DEVICES=0 python -u main.py --model distmult --data rand_add_n_distmult_FB15k-237_1_1_1 --lr 0.005 --input-drop 0.5

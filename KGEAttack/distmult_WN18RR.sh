@@ -70,7 +70,7 @@ CUDA_VISIBLE_DEVICES=0 python -u main.py --model distmult --data inv_add_3_distm
 
 
 echo 'Generating composition edits with ground truth values'
-#python -u create_clusters.py --model distmult --data WN18RR --num-clusters 300
+python -u create_clusters.py --model distmult --data WN18RR --num-clusters 300
 CUDA_VISIBLE_DEVICES=0 python -u com_add_attack_1.py --model distmult --data WN18RR --budget 1 --num-clusters 300 --rand-run 1
 python -u wrangle_KG.py com_add_1_distmult_WN18RR_1_1_1
 CUDA_VISIBLE_DEVICES=0 python -u main.py --model distmult --data com_add_1_distmult_WN18RR_1_1_1 --lr 0.01 --num-batches 50

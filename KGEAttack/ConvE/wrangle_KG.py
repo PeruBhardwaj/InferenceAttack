@@ -93,9 +93,9 @@ if __name__ == '__main__':
     rdm = np.random.RandomState(seed)
     rng = np.random.default_rng(seed)
     
-    print('Generating filter lists for evaluation')
+    print('{}: Generating filter lists for evaluation'.format(dataset_name))
     generate_eval_filter(dataset_name)
-    print('Generating train data')
+    print('{}: Generating train data'.format(dataset_name))
     generate_train_data(dataset_name)
      
         

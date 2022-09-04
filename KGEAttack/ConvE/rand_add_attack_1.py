@@ -19,6 +19,7 @@ import argparse
 import math
 from pprint import pprint
 import errno
+import time
 
 import torch
 from torch.utils.data import DataLoader
@@ -199,6 +200,23 @@ if __name__ == '__main__':
             args.reg_weight = 1e-10
         else:
             print("New model:{0},{1}. Set hyperparams".format(args.data, args.model))
+    elif args.data == 'WN18':
+        if args.model == 'distmult':
+            args.lr = 0.01
+            args.num_batches = 50
+        elif args.model == 'complex':
+            args.lr = 0.01
+        elif args.model == 'conve':
+            args.lr =  0.005
+        elif args.model == 'transe':
+            args.lr = 0.01 
+            args.input_drop = 0.0 
+            args.transe_margin = 9.0
+            args.num_batches = 1500  
+            args.epochs = 100
+            args.reg_weight = 1e-12
+        else:
+            print("New model:{0},{1}. Set hyperparams".format(args.data, args.model))
     else:
         print("New dataset:{0}. Set hyperparams".format(args.data))
 
@@ -218,11 +236,13 @@ if __name__ == '__main__':
     model_name = '{0}_{1}_{2}_{3}_{4}'.format(args.model, args.embedding_dim, args.input_drop, args.hidden_drop, args.feat_drop)
     model_path = 'saved_models/{0}_{1}.model'.format(args.data, model_name)
     #log_path = 'logs/inv_add_1_{0}_{1}_{2}_{3}.log'.format(args.data, model_name, args.num_batches, args.epochs)
+    log_path = 'logs/attack_logs/rand_add_n/{0}_{1}_{2}_{3}_{4}'.format( args.model, args.data, args.target_split, args.budget, args.rand_run)
 
 
     logging.basicConfig(format = '%(asctime)s - %(levelname)s - %(name)s -   %(message)s',
                             datefmt = '%m/%d/%Y %H:%M:%S',
-                            level = logging.INFO
+                            level = logging.INFO,
+                            filename = log_path
                            )
     logger = logging.getLogger(__name__)
 
@@ -266,6 +286,10 @@ if __name__ == '__main__':
 
 
     # In[12]:
+    
+    logger.info('------ Generating edits per target triple ------')
+    start_time = time.time()
+    logger.info('Start time: {0}'.format(str(start_time)))
 
 
     # Finding corruptions of type 1; checking existence in train set and adding them
@@ -350,6 +374,8 @@ if __name__ == '__main__':
         test_trip_idx += 1
 
     del per_tr
+    
+    logger.info('Time taken to generate edits: {0}'.format(time.time() - start_time))
 
 
     # In[13]:

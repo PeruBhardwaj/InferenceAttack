@@ -49,7 +49,7 @@ def generate_ids():
     entities_to_id = {x:i for (i,x) in enumerate(sorted(unique_ent))}
     rel_to_id = {x:i for (i,x) in enumerate(sorted(unique_rel))}
     
-    print("{} entities and {} relations".format(len(unique_ent), len(unique_rel)))
+    print("{}: {} entities and {} relations".format(dataset_name, len(unique_ent), len(unique_rel)))
     
     return unique_ent, unique_rel, entities_to_id, rel_to_id 
 
@@ -63,7 +63,7 @@ def generate_ids_from_train():
     entities_to_id = {x: i for (i, x) in enumerate(sorted(unique_ent))}
     rel_to_id = {x: i for (i, x) in enumerate(sorted(unique_rel))}
     
-    print("{} entities and {} relations".format(len(unique_ent), len(unique_rel)))
+    print("{}: {} entities and {} relations".format(dataset_name, len(unique_ent), len(unique_rel)))
     
     return unique_ent, unique_rel, entities_to_id, rel_to_id
 
@@ -79,7 +79,7 @@ def process_and_save(entities_to_id, relations_to_id, unique_ent):
             raise
             
     with open(os.path.join(processed_path, 'dataset_stats.txt'), 'w') as file:
-        file.write("{} entities and {} relations \n".format(len(unique_ent), len(unique_rel)))
+        file.write("{}: {} entities and {} relations \n".format(dataset_name, len(unique_ent), len(unique_rel)))
     
     # function to filter out triples with unseen entities
     def _filter_unseen_entities(x):
@@ -95,7 +95,7 @@ def process_and_save(entities_to_id, relations_to_id, unique_ent):
         x = _load_data(file_path)
         x, n_removed_ents = _filter_unseen_entities(x) # filter unseen entities if any
         if n_removed_ents > 0:
-            msg = '{0} split: Removed {1} triples containing unseen entities. \n'.format(f, n_removed_ents)
+            msg = '{0}: {1} split: Removed {2} triples containing unseen entities. \n'.format(dataset_name, f, n_removed_ents)
             with open(os.path.join(processed_path, 'dataset_stats.txt'), 'a') as file:
                 file.write(msg)
             print(msg)
@@ -135,7 +135,7 @@ with open(os.path.join(processed_path, 'entities_dict.json'), 'w') as f:
 with open(os.path.join(processed_path, 'relations_dict.json'), 'w') as f:
     f.write(json.dumps(rel_to_id)  + '\n')
     
-print("{} entities and {} relations".format(len(unique_ent), len(unique_rel)))
+print("{}: {} entities and {} relations".format(dataset_name, len(unique_ent), len(unique_rel)))
     
     
 

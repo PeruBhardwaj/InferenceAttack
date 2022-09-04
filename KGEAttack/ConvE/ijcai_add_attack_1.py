@@ -21,6 +21,7 @@ import math
 from pprint import pprint
 import pandas as pd
 import errno
+import time
 from sklearn.cluster import MiniBatchKMeans, KMeans
 
 import torch
@@ -208,6 +209,23 @@ elif args.data == 'FB15k-237':
         args.reg_weight = 1e-10
     else:
         print("New model:{0},{1}. Set hyperparams".format(args.data, args.model))
+elif args.data == 'WN18':
+    if args.model == 'distmult':
+        args.lr = 0.01
+        args.num_batches = 50
+    elif args.model == 'complex':
+        args.lr = 0.01
+    elif args.model == 'conve':
+        args.lr =  0.005
+    elif args.model == 'transe':
+        args.lr = 0.01 
+        args.input_drop = 0.0 
+        args.transe_margin = 9.0
+        args.num_batches = 1500  
+        args.epochs = 100
+        args.reg_weight = 1e-12
+    else:
+        print("New model:{0},{1}. Set hyperparams".format(args.data, args.model))
 else:
     print("New dataset:{0}. Set hyperparams".format(args.data))
 
@@ -277,6 +295,10 @@ for key, size, count in params:
 model.load_state_dict(model_params)
 
 model.eval()
+
+logger.info('------ Generating edits per target triple ------')
+start_time = time.time()
+logger.info('Start time: {0}'.format(str(start_time)))
 
 
 # **Pseudocode**
@@ -465,7 +487,7 @@ for test_idx, triple in enumerate(test_data):
 
 
 # In[15]:
-
+logger.info('Time taken to generate edits: {0}'.format(time.time() - start_time))
 
 logger.info(len(trip_to_add_o))
 logger.info(len(trip_to_add_s))
