@@ -81,6 +81,21 @@ class Complex(torch.nn.Module):
         return pred
     
     def score_triples(self, sub, rel, obj, sigmoid=False):
+        #e1_embedded_real = self.emb_e_real(sub).squeeze(dim=1)
+        #rel_embedded_real = self.emb_rel_real(rel).squeeze(dim=1)
+        #e2_embedded_real = self.emb_e_real(obj).squeeze(dim=1)
+        
+        #e1_embedded_img =  self.emb_e_img(sub).squeeze(dim=1)
+        #rel_embedded_img = self.emb_rel_img(rel).squeeze(dim=1)
+        #e2_embedded_img = self.emb_e_img(obj).squeeze(dim=1)
+        
+        # complex space bilinear product (equivalent to HolE)
+        #realrealreal = torch.mm(e1_embedded_real*rel_embedded_real, e2_embedded_real.transpose(1,0))
+        #realimgimg = torch.mm(e1_embedded_real*rel_embedded_img, e2_embedded_img.transpose(1,0))
+        #imgrealimg = torch.mm(e1_embedded_img*rel_embedded_real, e2_embedded_img.transpose(1,0))
+        #imgimgreal = torch.mm(e1_embedded_img*rel_embedded_img, e2_embedded_real.transpose(1,0))
+        #pred = realrealreal + realimgimg + imgrealimg - imgimgreal
+        
         e_s_real = self.emb_e_real(sub).squeeze(dim=1)
         e_p_real = self.emb_rel_real(rel).squeeze(dim=1)
         e_o_real = self.emb_e_real(obj).squeeze(dim=1)
@@ -106,10 +121,49 @@ class Complex(torch.nn.Module):
         emb_r_real, emb_r_img = torch.chunk(emb_r, 2, dim=-1)
         emb_o_real, emb_o_img = torch.chunk(emb_o, 2, dim=-1)
         
+        #realrealreal = torch.mm(emb_s_real*emb_r_real, emb_o_real.transpose(1,0))
+        #realimgimg = torch.mm(emb_s_real*emb_r_img, emb_o_img.transpose(1,0))
+        #imgrealimg = torch.mm(emb_s_img*emb_r_real, emb_o_img.transpose(1,0))
+        #imgimgreal = torch.mm(emb_s_img*emb_r_img, emb_o_real.transpose(1,0))
+        #pred = realrealreal + realimgimg + imgrealimg - imgimgreal
+        
         realrealreal = torch.sum(emb_s_real*emb_r_real*emb_o_real, dim=-1)
         realimgimg = torch.sum(emb_s_real*emb_r_img*emb_o_img, axis=-1)
         imgrealimg = torch.sum(emb_s_img*emb_r_real*emb_o_img, axis=-1)
         imgimgreal = torch.sum(emb_s_img*emb_r_img*emb_o_real, axis=-1)
+        pred = realrealreal + realimgimg + imgrealimg - imgimgreal
+        
+        if sigmoid:
+            pred = torch.sigmoid(pred)
+
+        return pred
+    
+    def score_triples_vec(self, sub, rel, obj, sigmoid=False):
+        '''
+        Inputs - subject, relation, object
+        Return - a vector score for the triple instead of reducing over the embedding dimension
+        '''
+        s_real = self.emb_e_real(sub).squeeze(dim=1)
+        rel_real = self.emb_rel_real(rel).squeeze(dim=1)
+        o_real = self.emb_e_real(obj).squeeze(dim=1)
+        
+        s_img =  self.emb_e_img(sub).squeeze(dim=1)
+        rel_img = self.emb_rel_img(rel).squeeze(dim=1)
+        o_img = self.emb_e_img(obj).squeeze(dim=1)
+        
+#         sub_emb = self.emb_e(sub).squeeze(dim=1)
+#         rel_emb = self.emb_rel(rel).squeeze(dim=1)
+#         obj_emb = self.emb_e(obj).squeeze(dim=1)
+        
+#         s_real, s_img = torch.chunk(sub_emb, 2, dim=-1)
+#         rel_real, rel_img = torch.chunk(rel_emb, 2, dim=-1)
+#         o_real, o_img = torch.chunk(obj_emb, 2, dim=-1)
+        
+        realrealreal = s_real*rel_real*o_real
+        realimgimg = s_real*rel_img*o_img
+        imgrealimg = s_img*rel_real*o_img
+        imgimgreal = s_img*rel_img*o_real
+        
         pred = realrealreal + realimgimg + imgrealimg - imgimgreal
         
         if sigmoid:
@@ -214,6 +268,24 @@ class Transe(torch.nn.Module):
             pred = torch.sigmoid(pred)
 
         return pred
+    
+    def score_triples_vec(self, sub, rel, obj, sigmoid=False):
+        '''
+        Inputs - subject, relation, object
+        Return - vector score for the triple instead of reducing over the embedding dimension
+        '''
+        sub_emb = self.emb_e(sub).squeeze(dim=1)
+        rel_emb = self.emb_rel(rel).squeeze(dim=1)
+        obj_emb = self.emb_e(obj).squeeze(dim=1)
+        
+        pred = -(sub_emb + rel_emb - obj_emb)
+        pred += torch.tensor(self.margin).to(self.args.device).expand_as(pred)
+        #pred = self.margin - torch.norm(pred, p=self.norm, dim=-1)
+        
+        if sigmoid:
+            pred = torch.sigmoid(pred)
+
+        return pred
 
 
 
@@ -273,6 +345,22 @@ class Distmult(torch.nn.Module):
     def score_emb(self, emb_s, emb_r, emb_o, sigmoid=False):
         pred = torch.sum(emb_s*emb_r*emb_o, dim=-1)
         #pred = torch.mm(emb_s*emb_r, emb_o.transpose(1,0))
+        
+        if sigmoid:
+            pred = torch.sigmoid(pred)
+
+        return pred
+    
+    def score_triples_vec(self, sub, rel, obj, sigmoid=False):
+        '''
+        Inputs - subject, relation, object
+        Return - a vector score for the triple instead of reducing over the embedding dimension
+        '''
+        sub_emb = self.emb_e(sub).squeeze(dim=1)
+        rel_emb = self.emb_rel(rel).squeeze(dim=1)
+        obj_emb = self.emb_e(obj).squeeze(dim=1)
+        
+        pred = sub_emb*rel_emb*obj_emb
         
         if sigmoid:
             pred = torch.sigmoid(pred)
@@ -376,6 +464,7 @@ class Conve(torch.nn.Module):
         x  = F.relu(x)
         
         x = torch.mm(x, obj_emb.transpose(1,0)) 
+        #x += self.b.expand_as(x) # leaving this out because can't use this for score_emb (score_trip is used by proposed attacks; but score_emb is used by IJCAI baseline)
         # above works fine for single input triples; 
         # but if input is batch of triples, then this is a matrix where diagonal is scores
         # so use torch.diagonal() after calling this function
@@ -404,12 +493,36 @@ class Conve(torch.nn.Module):
         x  = F.relu(x)
         
         x = torch.mm(x, emb_o.transpose(1,0))
+        #x += self.b.expand_as(x) # can't use this because don't know which object (because IJCAI perturbs the embedding)
         
         if sigmoid:
             pred = torch.sigmoid(x)
         else: #using BCE with logits
             pred = x
             
+        return pred
+    
+    def score_triples_vec(self, sub, rel, obj, sigmoid=False):
+        '''
+        Inputs - subject, relation, object
+        Return - a vector score for the triple instead of reducing over the embedding dimension
+        '''
+        sub_emb = self.emb_e(sub)
+        rel_emb = self.emb_rel(rel)
+        obj_emb = self.emb_e(obj)
+        
+        x = self.conve_architecture(sub_emb, rel_emb)
+        
+        #pred = torch.mm(x, obj_emb.transpose(1,0))
+        pred = x*obj_emb
+        #print(pred.shape, self.b[obj].shape) #shapes are [7,200] and [7]
+        #pred += self.b[obj].expand_as(pred) #taking the bias value for object embedding - can't add scalar to vector
+        
+        #pred = sub_emb*rel_emb*obj_emb
+        
+        if sigmoid:
+            pred = torch.sigmoid(pred)
+
         return pred
     
     def concat(self, e1_embed, rel_embed, form='plain'):
@@ -426,6 +539,23 @@ class Conve(torch.nn.Module):
 
         else: raise NotImplementedError
         return stack_inp
+    
+    def conve_architecture(self, sub_emb, rel_emb):
+        stacked_inputs = self.concat(sub_emb, rel_emb)
+        stacked_inputs = self.bn0(stacked_inputs)
+        x  = self.inp_drop(stacked_inputs)
+        x  = self.conv1(x)
+        x  = self.bn1(x)
+        x  = F.relu(x)
+        x  = self.feature_drop(x)
+        #x  = x.view(x.shape[0], -1)
+        x  = x.view(-1, self.flat_sz)
+        x  = self.fc(x)
+        x  = self.hidden_drop(x)
+        x  = self.bn2(x)
+        x  = F.relu(x)
+        
+        return x
 
 
 # Add your own model here

@@ -8,6 +8,7 @@ mkdir saved_models/criage_inverter
 mkdir logs/attack_logs
 mkdir logs/attack_logs/criage_add_1 logs/attack_logs/ijcai_add_1 logs/attack_logs/criage_inverter
 mkdir logs/attack_logs/rand_add_{n,g} logs/attack_logs/sym_add_{1,2,3} logs/attack_logs/inv_add_{1,2,3} logs/attack_logs/com_add_{1,2,3}
+mkdir logs/attack_logs/inst_add_{cos,dot,l2} logs/attack_logs/grad_add_{cos,dot,l2}
 
 
 echo "Extracting original data.... "
