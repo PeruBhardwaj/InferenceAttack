@@ -5,19 +5,23 @@
 <p align="left">
   <a href="https://aclanthology.org/2021.acl-long.147/"><img src="https://img.shields.io/badge/ACL--2021-Abstract-blueviolet.svg"></a>
   <a href="https://aclanthology.org/2021.acl-long.147.pdf"><img src="https://img.shields.io/badge/ACL--2021-Paper-red.svg"></a>
-  <img src="https://img.shields.io/badge/ACL--2021-Video-yellow.svg">
+  <a href="https://underline.io/lecture/25460-poisoning-knowledge-graph-embeddings-via-relation-inference-patterns"><img src="https://img.shields.io/badge/ACL--2021-Video-yellow.svg"></a>
   <a href="https://aclanthology.org/2021.acl-long.147/"><img src="https://img.shields.io/badge/ACL--2021-Citation-9cf.svg"></a>
   <a href="https://underline.io/events/167/sessions?eventSessionId=5520"><img src="https://img.shields.io/badge/ACL--2021-Session--4D-green.svg"></a>
 </p>
 
 <p align="left">
-    <a href="https://www.scss.tcd.ie/~bhardwap/ACL2021_Paper.pdf"><img src="http://img.shields.io/badge/Paper-Pre--print-orange.svg"></a>
+    <a href="https://arxiv.org/abs/2111.06345"><img src="http://img.shields.io/badge/Paper-Pre--print-orange.svg"></a>
     <a href="https://github.com/PeruBhardwaj/InferenceAttack/blob/master/LICENSE"><img src="https://img.shields.io/badge/License-MIT-blue.svg"></a>
 </p>
 
 <h4 align="left">This is the code repository to accompany the ACL 2021 paper on poisoning attacks on KGE models. <br>
 The work is a part of my PhD study at Trinity College Dublin and is funded by Accenture Labs and ADAPT Centre. <br>
-For any questions or feedback, add an issue or email me at: peru.bhardwaj@adaptcentre.ie</h4>
+For any questions or feedback, add an issue or email me at: bhardwap at tcd dot ie</h4>
+
+### Related Publications
+1. Adversarial Attacks on Knowledge Graph Embeddings via Instance Attribution Methods (EMNLP 2021) - <a href="https://aclanthology.org/2021.emnlp-main.648/">Paper</a>, <a href="https://github.com/PeruBhardwaj/AttributionAttack">Codebase</a>
+2. Adversarial Robustness of Representation Learning for Knowledge Graphs (PhD Thesis) - <a href="http://www.tara.tcd.ie/bitstream/handle/2262/101176/Thesis_PeruBhardwaj.pdf">Link</a>
 
 ## Overview
 ![](overview.jpg)
